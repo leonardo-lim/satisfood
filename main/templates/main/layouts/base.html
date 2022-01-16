@@ -18,7 +18,11 @@
 
     {% include 'main/layouts/navbar.html' %}
 
-    {% include 'main/index.html' %}
+    {% if layout == 'index' %}
+        {% include 'main/index.html' %}
+    {% else %}
+        {% include 'main/result.html' with restaurants=restaurants %}
+    {% endif %}
 
     {% include 'main/layouts/footer.html' with year=year %}
 </body>
