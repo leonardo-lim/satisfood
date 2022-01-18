@@ -1,10 +1,67 @@
-<h1>Here's our recommendation for you</h1>
+<div class="container">
+    <div class="row min-vh-100 pt-5 d-flex align-items-center">
+        <div class="col mt-5">
+            <div class="row">
+                <div class="col">
+                    <div class="mt-5">
+                        <h6 class="fs-2 text-center text-orange"><img src="static/img/logo.png" alt="Logo" width="50"> Here's our best recommendation for you</h6>
+                    </div>
+                </div>
+            </div>
 
-{% for restaurant in restaurants %}
-    <img src="{{ restaurant.image }}" alt="{{ restaurant.name }}">
-    <h3>{{ restaurant.name }}</h3>
-    <p>{{ restaurant.location }}</p>
-    <p>{{ restaurant.phone }}</p>
-    <p>{{ restaurant.rating }}</p>
-    <p>{{ restaurant.review }}</p>
-{% endfor %}
+            <div class="row d-flex justify-content-center my-5">
+                {% for restaurant in restaurants %}
+                    <div class="col-lg-6 col-12">
+                        <div class="card mb-3 d-flex flex-column">
+                            <div class="row g-0 h-100">
+                                <div class="col-2 my-auto">
+                                    <img src="{{ restaurant.image }}" class="img-fluid" alt="{{ restaurant.name }}">
+                                </div>
+                                <div class="col-10">
+                                    <div class="card-body">
+                                        {% if restaurant.name %}
+                                            <h5 class="card-title">{{ restaurant.name }}</h5>
+                                        {% else %}
+                                            <h5 class="card-title">-</h5>
+                                        {% endif %}
+
+                                        <hr>
+
+                                        {% if restaurant.location %}
+                                            <h6 class="card-text"><i class="fa fa-map-marker-alt"></i> {{ restaurant.location }}</h6>
+                                        {% else %}
+                                            <h6 class="card-text"><i class="fa fa-map-marker-alt"></i> -</h6>
+                                        {% endif %}
+
+                                        {% if restaurant.phone %}
+                                            <h6 class="card-text"><i class="fa fa-phone-alt"></i> {{ restaurant.phone }}</h6>
+                                        {% else %}
+                                            <h6 class="card-text"><i class="fa fa-phone-alt"></i> -</h6>
+                                        {% endif %}
+
+                                        {% if restaurant.rating %}
+                                            <span class="card-text"><i class="fa fa-star"></i> {{ restaurant.rating }}</span>
+                                        {% else %}
+                                            <span class="card-text"><i class="fa fa-star"></i> -</span>
+                                        {% endif %}
+
+                                        {% if restaurant.review %}
+                                            {% if restaurant.review > 1 %}
+                                                <span class="card-text"><i class="fa fa-comments"></i> {{ restaurant.review }} reviews</span>
+                                            {% else %}
+                                                <span class="card-text"><i class="fa fa-comments"></i> {{ restaurant.review }} review</span>
+                                            {% endif %}
+                                        {% else %}
+                                            <span class="card-text"><i class="fa fa-comments"></i> -</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="" class="btn btn-brown w-100 mt-auto"><i class="fa fa-check"></i> Mark as Choice</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
