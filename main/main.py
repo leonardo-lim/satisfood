@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 from main.restaurant import get_restaurants
+from main.weather import check_rain
 
 def recommend_restaurants(prev_restaurant):
     # Get restaurants
@@ -67,22 +68,89 @@ def recommend_restaurants(prev_restaurant):
             restaurant_indices.remove(indice)
             break
 
-    # Create array for recommendation results
-    results = []
+    # Create array for sorted restaurants
+    sorted_restaurants = []
 
     # Sort restaurants by restaurant indices
     for indice in restaurant_indices:
-        results.append(restaurants[indice])
+        sorted_restaurants.append(restaurants[indice])
 
-    return results
+    # Check whether the weather condition is raining or not
+    if check_rain():
+        result = prioritize_rain_food_restaurants(sorted_restaurants)
+    else:
+        result = {
+            'is_rain': False,
+            'restaurants': sorted_restaurants
+        }
+
+    return result
 
 def show_restaurants():
     # Get restaurants
     restaurants = get_restaurants()
+
+    # Merge array of restaurant types to one string
+    for restaurant in restaurants:
+        temp = []
+
+        for types in restaurant['type']:
+            for type in types:
+                temp.append(type)
+
+        restaurant['type'] = ' '.join(temp)
 
     # Cut restaurant name in location
     for restaurant in restaurants:
         length = len(restaurant['name'])
         restaurant['location'] = restaurant['location'][length + 2:]
 
-    return restaurants
+    # Append name to type
+    for restaurant in restaurants:
+        if 'type' in restaurant:
+            temp = restaurant['name']
+            temp += ' '
+            temp += restaurant['type']
+            restaurant['type'] = temp
+
+    # Check whether the weather condition is raining or not
+    if check_rain():
+        result = prioritize_rain_food_restaurants(restaurants)
+    else:
+        result = {
+            'is_rain': False,
+            'restaurants': restaurants
+        }
+
+    return result
+
+def prioritize_rain_food_restaurants(restaurants):
+    # List all Indonesian foods that are suitable for rain
+    foods = ['bakso', 'baso', 'soto', 'tongseng', 'rawon', 'tengkleng', 'seblak', 'soup', 'sup', 'kuah', 'noodle', 'mie', 'hotpot']
+
+    # Create array for rain food restaurants and non rain food restaurants
+    rain_food_restaurants = []
+    non_rain_food_restaurants = []
+    check = False
+
+    # Find all restaurants that have food suitable for rain
+    for restaurant in restaurants:
+        for food in foods:
+            if food in restaurant['type'].lower():
+                rain_food_restaurants.append(restaurant)
+                check = True
+                break
+
+        if not check:
+            non_rain_food_restaurants.append(restaurant)
+        else:
+            check = False
+
+    # Store result in Python Dictionary
+    result = {
+        'is_rain': True,
+        'rain_food_restaurants': rain_food_restaurants,
+        'non_rain_food_restaurants': non_rain_food_restaurants
+    }
+
+    return result
