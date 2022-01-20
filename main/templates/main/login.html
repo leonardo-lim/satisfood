@@ -1,0 +1,38 @@
+<div class="container">
+    <div class="row min-vh-100 pt-5 d-flex align-items-center">
+        <div class="col-lg-6 col-12">
+            <img src="static/img/logo.png" class="d-block m-auto mt-lg-0 mt-5 logo" alt="Logo">
+        </div>
+        <div class="col-lg-6 col-12 my-5">
+            <h1 class="mb-3 text-lg-start text-center text-orange">Login</h1>
+
+            {% for message in messages %}
+                <div class="mb-3">
+                    <div class="alert alert-success w-75 py-2 mb-2 m-auto float-lg-start" role="alert">{{ message }}</div>
+                </div>
+            {% endfor %}
+
+            {% if error_message %}
+                <div class="mb-3">
+                    <div class="alert alert-warning w-75 py-2 mb-2 m-auto float-lg-start" role="alert">{{ error_message }}</div>
+                </div>
+            {% endif %}
+
+            <form action="authenticate" method="POST" class="text-lg-start text-center">
+                {% csrf_token %}
+
+                <div class="form-group mb-3">
+                    <span class="me-2 mt-1 position-absolute"><i class="fa fa-user text-gold"></i></span>
+                    <input type="text" class="form-control bg-transparent text-gold w-75 ps-4 border-0 border-bottom rounded-0 d-inline" id="username" name="username" placeholder="Enter your username" value="{{ user.username }}">
+                </div>
+                <div class="form-group mb-3">
+                    <span class="me-2 mt-1 position-absolute"><i class="fa fa-lock-alt text-gold"></i></span>
+                    <input type="password" class="form-control bg-transparent text-gold w-75 ps-4 border-0 border-bottom rounded-0 d-inline" id="password" name="password" placeholder="Enter your password" value="{{ user.password }}">
+                </div>
+                <button type="submit" class="btn btn-brown w-75 mb-2"><i class="fa fa-sign-in"></i> Login</button>
+                <a href="/" class="btn btn-orange w-75 mb-3"><i class="fa fa-arrow-left"></i> Back</a>
+                <p>Don't have an account? <a href="/register" class="register-link text-gold">Register</a></p>
+            </form>
+        </div>
+    </div>
+</div>

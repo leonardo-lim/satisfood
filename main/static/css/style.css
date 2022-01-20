@@ -25,6 +25,10 @@ html {
     border-radius: 10px;
 }
 
+::placeholder {
+    color: #ffe0a9 !important;
+}
+
 /* Additional */
 .text-orange {
     color: #ff8243 !important;
@@ -58,6 +62,16 @@ html {
     background-color: #1a0a03 !important;
 }
 
+.btn:focus {
+    box-shadow: none !important;
+}
+
+.form-control:focus {
+    border-bottom: 1px solid #bfbe58 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
 /* Background */
 .background {
     width: 100%;
@@ -86,6 +100,15 @@ html {
     .logo {
         width: 300px;
     }
+}
+
+/* Login */
+.register-link {
+    text-decoration: none;
+}
+
+.register-link:hover {
+    text-decoration: underline;
 }
 
 /* Result */
