@@ -64,7 +64,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <a href="" class="btn btn-brown w-100 mt-auto"><i class="fa fa-check"></i> Mark as Choice</a>
+
+                                <form action="mark" method="POST">
+                                    {% csrf_token %}
+
+                                    <input type="hidden" name="restaurant_type" value="{{ restaurant.type }}">
+                                    <button type="submit" class="btn btn-brown w-100 mt-auto"><i class="fa fa-check"></i> Mark as Choice</button>
+                                </form>
                             </div>
                         </div>
                     {% endfor %}
@@ -116,7 +122,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <a href="" class="btn btn-brown w-100 mt-auto"><i class="fa fa-check"></i> Mark as Choice</a>
+
+                                <form action="mark" method="POST">
+                                    {% csrf_token %}
+
+                                    <input type="hidden" name="restaurant_type" value="{{ restaurant.type }}">
+                                    <button type="submit" class="btn btn-brown w-100 mt-auto"><i class="fa fa-check"></i> Mark as Choice</button>
+                                </form>
                             </div>
                         </div>
                     {% endfor %}
@@ -170,7 +182,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <a href="" class="btn btn-brown w-100 mt-auto"><i class="fa fa-check"></i> Mark as Choice</a>
+
+                                <form action="mark" method="POST">
+                                    {% csrf_token %}
+
+                                    <input type="hidden" name="restaurant_type" value="{{ restaurant.type }}">
+                                    <button type="submit" class="btn btn-brown w-100 mt-auto"><i class="fa fa-check"></i> Mark as Choice</button>
+                                </form>
                             </div>
                         </div>
                     {% endfor %}

@@ -26,8 +26,10 @@
         {% include 'main/login.html' %}
     {% elif layout == 'register' %}
         {% include 'main/register.html' %}
-    {% else %}
+    {% elif layout == 'result' %}
         {% include 'main/result.html' with restaurants=restaurants %}
+    {% else %}
+        {% include 'main/marked.html' %}
     {% endif %}
 
     {% include 'main/layouts/footer.html' with year=year %}

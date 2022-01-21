@@ -67,6 +67,7 @@ def authenticate(request):
                 return render(request, 'main/layouts/base.html', { 'layout': 'login', 'year': date.today().year, 'is_authenticated': request.session['is_authenticated'], 'name': request.session['name'], 'user': user, 'error_message': error_message })
             else:
                 request.session['is_authenticated'] = True
+                request.session['username'] = user['username']
                 request.session['name'] = name
                 return redirect('/')
 
@@ -143,9 +144,19 @@ def create_user(request:HttpRequest):
                 return redirect('/login')
 
 def logout(request):
-    request.session['is_authenticated'] = False
-    request.session['name'] = ''
-    messages.success(request, 'You have been logged out')
+    try:
+        request.session['is_authenticated']
+        request.session['name']
+    except:
+        request.session['is_authenticated'] = False
+        request.session['name'] = ''
+
+    if request.session['is_authenticated']:
+        request.session['is_authenticated'] = False
+        request.session['username'] = ''
+        request.session['name'] = ''
+        messages.success(request, 'You have been logged out')
+
     return redirect('/login')
 
 def result(request):
@@ -159,10 +170,26 @@ def result(request):
     if not request.session['is_authenticated']:
         return redirect('/login')
     else:
-        prev_restaurant = {}
+        registered_users = User.objects.all()
+
+        # Find logged in user in database
+        for registered_user in registered_users:
+            if registered_user.username == request.session['username']:
+                prev_restaurant_type = registered_user.prev_restaurant
+                break
 
         # Check whether the user is new or not
-        if prev_restaurant:
+        if prev_restaurant_type:
+            prev_restaurant = {
+                'name': '',
+                'type': prev_restaurant_type,
+                'location': '',
+                'phone': '',
+                'rating': 0,
+                'review': 0,
+                'image': ''
+            }
+
             result = recommend_restaurants(prev_restaurant)
         else:
             result = show_restaurants()
@@ -179,3 +206,23 @@ def result(request):
             restaurants = result['restaurants']
 
             return render(request, 'main/layouts/base.html', { 'restaurants': restaurants, 'is_rain': is_rain, 'layout': 'result', 'year': date.today().year, 'is_authenticated': request.session['is_authenticated'], 'name': request.session['name'] })
+
+def mark(request:HttpRequest):
+    try:
+        request.session['is_authenticated']
+        request.session['name']
+    except:
+        request.session['is_authenticated'] = False
+        request.session['name'] = ''
+
+    restaurant_type = request.POST['restaurant_type']
+    registered_users = User.objects.all()
+
+    # Find logged in user in database
+    for registered_user in registered_users:
+        if registered_user.username == request.session['username']:
+            registered_user.prev_restaurant = restaurant_type
+            registered_user.save()
+            break
+
+    return render(request, 'main/layouts/base.html', { 'layout': 'marked', 'year': date.today().year, 'is_authenticated': request.session['is_authenticated'], 'name': request.session['name'] })
