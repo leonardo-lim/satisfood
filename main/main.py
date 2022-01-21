@@ -4,19 +4,20 @@ from sklearn.metrics.pairwise import linear_kernel
 from main.restaurant import get_restaurants
 from main.weather import check_rain
 
-def recommend_restaurants(prev_restaurant):
+def recommend_restaurants(prev_restaurant, address):
     # Get restaurants
-    restaurants = get_restaurants()
+    restaurants = get_restaurants(address)
 
     # Merge array of restaurant types to one string
     for restaurant in restaurants:
         temp = []
 
-        for types in restaurant['type']:
-            for type in types:
-                temp.append(type)
+        if restaurant['type']:
+            for types in restaurant['type']:
+                for type in types:
+                    temp.append(type)
 
-        restaurant['type'] = ' '.join(temp)
+            restaurant['type'] = ' '.join(temp)
 
     # Cut restaurant name in location
     for restaurant in restaurants:
@@ -25,7 +26,7 @@ def recommend_restaurants(prev_restaurant):
 
     # Append name to type
     for restaurant in restaurants:
-        if 'type' in restaurant:
+        if 'type' in restaurant and restaurant['type']:
             temp = restaurant['name']
             temp += ' '
             temp += restaurant['type']
@@ -76,7 +77,7 @@ def recommend_restaurants(prev_restaurant):
         sorted_restaurants.append(restaurants[indice])
 
     # Check whether the weather condition is raining or not
-    if check_rain():
+    if check_rain(address):
         result = prioritize_rain_food_restaurants(sorted_restaurants)
     else:
         result = {
@@ -86,19 +87,20 @@ def recommend_restaurants(prev_restaurant):
 
     return result
 
-def show_restaurants():
+def show_restaurants(address):
     # Get restaurants
-    restaurants = get_restaurants()
+    restaurants = get_restaurants(address)
 
     # Merge array of restaurant types to one string
     for restaurant in restaurants:
         temp = []
 
-        for types in restaurant['type']:
-            for type in types:
-                temp.append(type)
+        if restaurant['type']:
+            for types in restaurant['type']:
+                for type in types:
+                    temp.append(type)
 
-        restaurant['type'] = ' '.join(temp)
+            restaurant['type'] = ' '.join(temp)
 
     # Cut restaurant name in location
     for restaurant in restaurants:
@@ -107,14 +109,14 @@ def show_restaurants():
 
     # Append name to type
     for restaurant in restaurants:
-        if 'type' in restaurant:
+        if 'type' in restaurant and restaurant['type']:
             temp = restaurant['name']
             temp += ' '
             temp += restaurant['type']
             restaurant['type'] = temp
 
     # Check whether the weather condition is raining or not
-    if check_rain():
+    if check_rain(address):
         result = prioritize_rain_food_restaurants(restaurants)
     else:
         result = {
@@ -135,11 +137,12 @@ def prioritize_rain_food_restaurants(restaurants):
 
     # Find all restaurants that have food suitable for rain
     for restaurant in restaurants:
-        for food in foods:
-            if food in restaurant['type'].lower():
-                rain_food_restaurants.append(restaurant)
-                check = True
-                break
+        if restaurant['type']:
+            for food in foods:
+                if food in restaurant['type'].lower():
+                    rain_food_restaurants.append(restaurant)
+                    check = True
+                    break
 
         if not check:
             non_rain_food_restaurants.append(restaurant)

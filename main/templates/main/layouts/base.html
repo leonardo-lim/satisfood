@@ -26,6 +26,10 @@
         {% include 'main/login.html' %}
     {% elif layout == 'register' %}
         {% include 'main/register.html' %}
+    {% elif layout == 'option' %}
+        {% include 'main/option.html' %}
+    {% elif layout == 'address' %}
+        {% include 'main/address.html' %}
     {% elif layout == 'result' %}
         {% include 'main/result.html' with restaurants=restaurants %}
     {% else %}
