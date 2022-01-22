@@ -1,0 +1,1 @@
+web: gunicorn satisfood.wsgi --log-file -
