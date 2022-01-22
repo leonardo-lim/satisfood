@@ -229,6 +229,7 @@ def result(request:HttpRequest):
                 }
 
                 result = recommend_restaurants(prev_restaurant, address)
+                print(request.headers)
             else:
                 result = show_restaurants(address)
 
