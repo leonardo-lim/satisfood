@@ -208,6 +208,7 @@ def result(request:HttpRequest):
             error_message = 'Please fill in the field'
             return render(request, 'main/layouts/base.html', { 'layout': 'address', 'year': date.today().year, 'is_authenticated': request.session['is_authenticated'], 'name': request.session['name'], 'error_message': error_message })
         else:
+            ip_address = request.headers['X-Forwarded-For']
             registered_users = User.objects.all()
 
             # Find logged in user in database
@@ -228,10 +229,9 @@ def result(request:HttpRequest):
                     'image': ''
                 }
 
-                result = recommend_restaurants(prev_restaurant, address)
-                print(request.headers)
+                result = recommend_restaurants(prev_restaurant, address, ip_address)
             else:
-                result = show_restaurants(address)
+                result = show_restaurants(address, ip_address)
 
             # Check whether the weather condition is raining or not
             if result['is_rain']:

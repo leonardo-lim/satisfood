@@ -20,7 +20,7 @@ def grab_map(lat, lon):
 
     return cleaned_content
 
-def get_restaurants(address):
+def get_restaurants(address, ip_address):
     # Create array for restaurants info
     restaurants = []
 
@@ -28,7 +28,7 @@ def get_restaurants(address):
     if address:
         loc = geocoding(address)
     else:
-        loc = get_location()
+        loc = get_location(ip_address)
 
     # Get user location
     lat = loc['lat']

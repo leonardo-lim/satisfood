@@ -2,8 +2,8 @@ import requests
 import urllib
 from decouple import config
 
-def get_location():
-    api_url = 'https://ipapi.co/json'
+def get_location(ip_address):
+    api_url = f'https://ipapi.co/{ip_address}/json'
 
     # Request and get location data
     res = requests.get(api_url)
