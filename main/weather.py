@@ -21,7 +21,7 @@ def check_rain(address, ip_address):
     data = res.json()
 
     # Get weather condition
-    weather_condition = data['daily'][0]['weather'][0]['main']
+    weather_condition = data['current']['weather'][0]['main']
 
     # Check whether the weather condition is raining or not
     is_rain = weather_condition == 'Thunderstorm' or weather_condition == 'Drizzle' or weather_condition == 'Rain'
