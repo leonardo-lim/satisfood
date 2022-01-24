@@ -1,13 +1,16 @@
 import requests
 from decouple import config
-from main.location import get_location, geocoding
+from main.location import geocoding
 
-def check_rain(address, ip_address):
+def check_rain(address, lat, lon):
     # Check whether the user input address or not
     if address:
         loc = geocoding(address)
     else:
-        loc = get_location(ip_address)
+        loc = {
+            'lat': lat,
+            'lon': lon
+        }
 
     # Get user location
     lat = loc['lat']

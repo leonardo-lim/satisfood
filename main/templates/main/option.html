@@ -17,10 +17,14 @@
                     </a>
                 </div>
                 <div class="col-lg-6 col-12 text-lg-start text-center mb-5">
-                    <a href="/result" class="btn btn-brown w-50 p-4">
-                        <h1 class="text-orange mb-5"><i class="fa fa-location fa-5x"></i></h1>
-                        <h5 class="text-gold">Use IP Location</h5>
-                    </a>
+                    <form action="result" method="POST" id="location-form">
+                        {% csrf_token %}
+
+                        <button type="submit" class="btn btn-brown w-50 p-4" id="location">
+                            <h1 class="text-orange mb-5"><i class="fa fa-location fa-5x"></i></h1>
+                            <h5 class="text-gold">Use My Location</h5>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

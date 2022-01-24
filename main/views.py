@@ -196,19 +196,27 @@ def result(request:HttpRequest):
     if not request.session['is_authenticated']:
         return redirect('/login')
     else:
+        use_location = None
+
         try:
             address = request.POST['address']
-            use_ip_location = False
+            use_location = False
         except:
             address = ''
-            use_ip_location = True
+
+        try:
+            lat = request.POST['lat']
+            lon = request.POST['lon']
+            use_location = True
+        except:
+            lat = ''
+            lon = ''
 
         # Check whether the field is filled or not
-        if not use_ip_location and not address:
+        if not use_location and not address:
             error_message = 'Please fill in the field'
             return render(request, 'main/layouts/base.html', { 'layout': 'address', 'year': date.today().year, 'is_authenticated': request.session['is_authenticated'], 'name': request.session['name'], 'error_message': error_message })
         else:
-            ip_address = request.headers['X-Forwarded-For']
             registered_users = User.objects.all()
 
             # Find logged in user in database
@@ -229,9 +237,9 @@ def result(request:HttpRequest):
                     'image': ''
                 }
 
-                result = recommend_restaurants(prev_restaurant, address, ip_address)
+                result = recommend_restaurants(prev_restaurant, address, lat, lon)
             else:
-                result = show_restaurants(address, ip_address)
+                result = show_restaurants(address, lat, lon)
 
             # Check whether the weather condition is raining or not
             if result['is_rain']:

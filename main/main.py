@@ -4,9 +4,9 @@ from sklearn.metrics.pairwise import linear_kernel
 from main.restaurant import get_restaurants
 from main.weather import check_rain
 
-def recommend_restaurants(prev_restaurant, address, ip_address):
+def recommend_restaurants(prev_restaurant, address, lat, lon):
     # Get restaurants
-    restaurants = get_restaurants(address, ip_address)
+    restaurants = get_restaurants(address, lat, lon)
 
     # Merge array of restaurant types to one string
     for restaurant in restaurants:
@@ -77,7 +77,7 @@ def recommend_restaurants(prev_restaurant, address, ip_address):
         sorted_restaurants.append(restaurants[indice])
 
     # Check whether the weather condition is raining or not
-    if check_rain(address, ip_address):
+    if check_rain(address, lat, lon):
         result = prioritize_rain_food_restaurants(sorted_restaurants)
     else:
         result = {
@@ -87,9 +87,9 @@ def recommend_restaurants(prev_restaurant, address, ip_address):
 
     return result
 
-def show_restaurants(address, ip_address):
+def show_restaurants(address, lat, lon):
     # Get restaurants
-    restaurants = get_restaurants(address, ip_address)
+    restaurants = get_restaurants(address, lat, lon)
 
     # Merge array of restaurant types to one string
     for restaurant in restaurants:
@@ -116,7 +116,7 @@ def show_restaurants(address, ip_address):
             restaurant['type'] = temp
 
     # Check whether the weather condition is raining or not
-    if check_rain(address, ip_address):
+    if check_rain(address, lat, lon):
         result = prioritize_rain_food_restaurants(restaurants)
     else:
         result = {
